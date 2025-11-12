@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Configuration – Jira Quick Finder</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container container--options">
+    <h2>Configuration</h2>
+    <div id="list"></div>
+
+    <div class="row">
+      <button id="btnAdd" class="btn secondary">
+        <span class="icon">➕</span> Add
+      </button>
+      <button id="btnSave" class="btn">
+        <span class="icon">💾</span> Save
+      </button>
+      <button id="btnCloseTab" class="btn secondary">
+        <span class="icon">❌</span> Close Tab
+      </button>
+    </div>
+
+    <!-- Mensaje de guardado -->
+    <div id="saveMessage" class="save-message"></div>
+  </div>
+
+  <template id="tplRow">
+    <div class="row-config">
+      <!-- Project -->
+      <div class="field">
+        <label class="label" for="project">Project</label>
+        <input type="text" class="input project" placeholder="e.g. Orange – Support" />
+      </div>
+      <!-- Key (prefix) -->
+      <div class="field">
+        <label class="label" for="pref">Key</label>
+        <input type="text" class="input pref" placeholder="e.g. MAG" />
+      </div>
+      <!-- Base URI (wider) -->
+      <div class="field field-uri">
+        <label class="label" for="url">Base URI</label>
+        <input type="url" class="input url" placeholder="https://.../browse/" />
+      </div>
+
+      <button class="btn-delete" title="Delete this configuration">🗑️</button>
+    </div>
+  </template>
+
+  <script src="options.js"></script>
+</body>
+</html>

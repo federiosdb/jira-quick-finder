@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Jira Quick Finder</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="popup-header">
+      <div class="brand">
+        <img src="icons/icon32.png" alt="NTT DATA" />
+        <strong>Jira Quick Finder</strong>
+      </div>
+      <button class="close" id="btnClose" title="Cerrar">✕</button>
+    </div>
+    <div class="row">
+      <label for="issueInput"><strong>Jira issue to search:</strong></label>
+      <input id="issueInput" class="input" type="text" placeholder="e.g. MAG-6660 or MAG-6660,MAG-6661" autofocus />
+    </div>
+    <div class="row">
+      <button id="btnOpen" class="btn">Search</button>
+      <button id="btnOptions" class="btn secondary">Configuration</button>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

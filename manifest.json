@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "NTT DATA – Jira Quick Finder",
+  "description": "Search issues from multiple Jira instances by key (e.g., MAG-6660) with one click or by pressing Enter. Configure prefix → base URL. More Info: Fede Ríos",
+  "version": "1.0.3",
+  "action": {
+    "default_title": "Jira Quick Finder",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_popup": "popup.html"
+  },
+  "permissions": ["storage", "tabs", "scripting"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "commands": {
+    "open_popup": {
+      "suggested_key": {
+        "default": "Alt+J"
+      },
+      "description": "Open Jira Quick Finder popup"
+    },
+    "open_from_clipboard": {
+      "suggested_key": {
+        "default": "Alt+Shift+J"
+      },
+      "description": "Open Jira issues from clipboard"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
