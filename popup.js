@@ -58,6 +58,15 @@ chrome.runtime.onMessage.addListener((msg) => {
 document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('issueInput');
 
+    // Versión dinámica en la esquina inferior derecha
+  const versionEl = document.getElementById('versionBadge');
+  try {
+    const { version } = chrome.runtime.getManifest() || {};
+    if (versionEl && version) versionEl.textContent = `v${version}`;
+  } catch (_) {
+    if (versionEl) versionEl.textContent = '';
+  }
+
   document.getElementById('btnOpen').addEventListener('click', async () => {
     await openIssues(parseKeys(input.value));
   });

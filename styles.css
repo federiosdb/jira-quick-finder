@@ -61,12 +61,14 @@ input.input.project {
 }
 .btn.secondary { background: #f6f8fb; color: var(--fg); }
 
+/* Botón de cierre arriba derecha */
 .close {
   background: transparent;
   border: none;
   font-size: 16px;
   cursor: pointer;
   color: var(--muted);
+  line-height: 1;
 }
 
 /* ===== Configuration styles ===== */
@@ -132,6 +134,26 @@ input.input.project {
 
 .save-message.visible {
   opacity: 1;
+}
+
+/* Header del popup */
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.brand { display: inline-flex; align-items: center; gap: 8px; }
+.brand img { width: 18px; height: 18px; border-radius: 4px; }
+
+/* Badge de versión abajo derecha */
+.version-badge {
+  margin-top: 6px;
+  text-align: right;
+  font-size: 12px;
+  color: #a8b0bd; /* gris claro */
+  user-select: none;
 }
 
 /* Responsive: en pantallas estrechas, apilar */
