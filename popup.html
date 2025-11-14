@@ -19,8 +19,21 @@
       <input id="issueInput" class="input" type="text" placeholder="e.g. MAG-6660 or MAG-6660,MAG-6661" autofocus />
     </div>
     <div class="row">
-      <button id="btnOpen" class="btn">Search</button>
-      <button id="btnOptions" class="btn secondary">Configuration</button>
+      <button id="btnOpen" class="btn">
+        <span class="icon-search" aria-hidden="true">
+          <!-- flat search icon (SVG) -->
+          <svg viewBox="0 0 24 24" width="16" height="16" focusable="false" aria-hidden="true">
+            <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-1.06 1.06l.27.28v.79l4.25 4.25a1 1 0 0 0 1.41-1.41L15.5 14Zm-6 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9Z" />
+          </svg>
+        </span>
+        Search
+      </button>
+      <!-- config Icon -->
+      <button id="btnOptions" class="btn-gear" title="Configuration" aria-label="Open configuration">
+        <svg class="gear-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M19.14 12.94a7.5 7.5 0 0 0 .06-.94 7.5 7.5 0 0 0-.06-.94l1.67-1.3a.75.75 0 0 0 .18-.96l-1.58-2.74a.75.75 0 0 0-.9-.34l-2 .8a6.9 6.9 0 0 0-1.58-.91l-.3-2.13A.75.75 0 0 0 12.9 2h-3.8a.75.75 0 0 0-.74.63l-.3 2.13c-.56.23-1.09.52-1.58.9l-2-.8a.75.75 0 0 0-.9.34L1.9 8.82a.75.75 0 0 0 .18.96l1.67 1.3a7.5 7.5 0 0 0 0 1.88l-1.67 1.3a.75.75 0 0 0-.18.96l1.58 2.74a.75.75 0 0 0 .9.34l2-.8c.49.38 1.02.67 1.58.9l.3 2.13c.06.36.37.63.74.63h3.8c.37 0 .69-.27.74-.63l.3-2.13c.56-.23 1.09-.52 1.58-.9l2 .8c.33.13.71 0 .9-.34l1.58-2.74a.75.75 0 0 0-.18-.96l-1.67-1.3ZM11 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6Z"/>
+        </svg>
+      </button>
       <div class="version-badge" id="versionBadge" aria-hidden="true"></div>
     </div>
   </div>

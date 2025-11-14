@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const versionEl = document.getElementById('versionBadge');
   try {
     const { version } = chrome.runtime.getManifest() || {};
-    if (versionEl && version) versionEl.textContent = `v${version}`;
+    if (versionEl && version) versionEl.textContent = `Beta v${version}`;
   } catch (_) {
     if (versionEl) versionEl.textContent = '';
   }
