@@ -100,11 +100,13 @@ jira-quick-finder/
     ├── logo.png
     └── picture.png
 ├── js/
-    ├── background.js
+    ├── history
+        └── history.js
     ├── news.js
     ├── options.js
     └── popup.js
 ├── pages
+    ├── history.html
     ├── news.html
     ├── options.html
     └── popup.html
