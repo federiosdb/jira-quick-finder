@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // open news page
   document.getElementById('btnBell').addEventListener('click', () => {
-    chrome.tabs.create({ url: chrome.runtime.getURL('/pages/news.html') });
+    chrome.tabs.create({ url: chrome.runtime.getURL('/src/pages/news.html') });
   });
 
   document.getElementById('btnOptions').addEventListener('click', () => chrome.runtime.openOptionsPage());

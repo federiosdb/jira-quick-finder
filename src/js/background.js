@@ -84,7 +84,7 @@ async function openIssuesFromBackground(keys) {
   if (notFound.length) {
     chrome.notifications.create(`missing-config-${Date.now()}`, {
       type: "basic",
-      iconUrl: "icons/icon48.png",
+      iconUrl: "/src/icons/icon48.png",
       title: "Missing prefix mapping",
       message: "Add mapping for: " + notFound.join(", "),
       priority: 1
@@ -109,7 +109,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (!keys.length) {
     chrome.notifications.create(`no-keys-${Date.now()}`, {
       type: "basic",
-      iconUrl: "icons/icon48.png",
+      iconUrl: "/src/icons/icon48.png",
       title: "No Jira keys found",
       message: "Select text like JAG-1234 (you can select many, separated by commas).",
       priority: 0
