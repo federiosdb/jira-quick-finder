@@ -15,15 +15,22 @@
     </header>
 
     <main class="container container--options card">
-      <div class="popup-header" style="margin-bottom: 16px;">
+      <div class="popup-header" style="margin-bottom: 8px;">
         <div class="brand">
-          <img src="../icons/icon32.png" alt="Jira Quick Finder" />
+          <img src="../icons/icon32.png" alt="NTT DATA" />
           <h6 class="title">History</h6>
         </div>
         <button class="close" id="btnCloseTab" title="Close Tab">✕</button>
       </div>
 
-      <div id="historyList"></div>
+      <!-- Cabecera visible solo una vez -->
+      <div class="hist-header">
+        <span>Issue</span>
+        <span>Title</span>
+        <span class="right">Last accessed</span>
+      </div>
+
+      <div id="historyList" class="hist-list"></div>
 
       <div class="toolbar">
         <button id="btnClearAll" class="btn secondary"><span class="icon">🧹</span> Clear all</button>
@@ -37,29 +44,16 @@
       <span class="dot">•</span>
       <span id="versionFooter"></span>
     </footer>
-  </div>
 
-  <template id="tplRow">
-    <div class="row-config">
-      <!-- Key (link) -->
-      <div class="field">
-        <label class="label">Issue</label>
-        <a class="input" target="_blank" rel="noreferrer noopener"></a>
+    <!-- Template de filas -->
+    <template id="tplRow">
+      <div class="hist-row">
+        <a class="hist-key" target="_blank" rel="noreferrer noopener"></a>
+        <span class="hist-title"></span>
+        <span class="hist-date"></span>
+        <button class="btn-delete" title="Delete">🗑️</button>
       </div>
-      <!-- Title -->
-      <div class="field field-uri">
-        <label class="label">Title</label>
-        <input type="text" class="input title" readonly />
-      </div>
-      <!-- Date -->
-      <div class="field">
-        <label class="label">Last accessed</label>
-        <input type="text" class="input date" readonly />
-      </div>
-      <!-- Delete -->
-      <button class="btn-delete" title="Delete">🗑️</button>
-    </div>
-  </template>
+    </template>
 
   <script src="../js/history/index.js"></script>
 </body>

@@ -1,23 +1,26 @@
-const KEY_HISTORY = 'searchHistory'; // { count: number, items: Array<{key,url,title,lastAccessTs}> }
+const KEY_HISTORY = 'searchHistory'; // { count:number, items:[{key,url,title,lastAccessTs}] }
 
 function timeFmt(ts) {
-  try {
-    return new Date(ts).toLocaleString();
-  } catch {
-    return '';
-  }
+  try { return new Date(ts).toLocaleString(); } catch { return ''; }
 }
 
-async function loadHistory() {
+function loadHistory() {
   return new Promise((resolve) => {
-    chrome.storage.sync.get({ [KEY_HISTORY]: { count: 0, items: [] } }, (res) => {
-      resolve(res[KEY_HISTORY] || { count: 0, items: [] });
-    });
+    chrome.storage.sync.get({ [KEY_HISTORY]: { count: 0, items: [] } }, (res) =>
+      resolve(res[KEY_HISTORY] || { count: 0, items: [] })
+    );
   });
 }
-
 async function saveHistory(data) {
   await chrome.storage.sync.set({ [KEY_HISTORY]: data });
+}
+
+function toast(msg) {
+  const el = document.getElementById('saveMessage');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('visible');
+  setTimeout(() => el.classList.remove('visible'), 1500);
 }
 
 function render(items) {
@@ -36,37 +39,37 @@ function render(items) {
   items.forEach((it) => {
     const node = tpl.content.firstElementChild.cloneNode(true);
 
-    // Issue link (uses the key as text)
-    const a = node.querySelector('a.input');
+    // Key (link)
+    const a = node.querySelector('.hist-key');
     a.href = it.url;
     a.textContent = it.key;
     a.title = it.url;
 
-    // Title
-    node.querySelector('.title').value = it.title || '';
+    // Title (span sin borde, texto entero)
+    // Clear the beginning of the Title (p. ej. "[MAG-6660] Something" -> "Something")
+    let cleanTitle = it.title || '';
+    if (it.key && cleanTitle.startsWith('[' + it.key + ']')) {
+      cleanTitle = cleanTitle.replace('[' + it.key + ']', '').trim();
+    }
+    node.querySelector('.hist-title').textContent = cleanTitle;
 
-    // Date
-    node.querySelector('.date').value = timeFmt(it.lastAccessTs);
+    // Date (with hour/min/sec)
+    node.querySelector('.hist-date').textContent = timeFmt(it.lastAccessTs);
 
-    // Delete
+    // Delete row
     node.querySelector('.btn-delete').addEventListener('click', async () => {
       const hist = await loadHistory();
       hist.items = (hist.items || []).filter(x => x.key !== it.key);
       await saveHistory(hist);
-      render(hist.items);
+      const items2 = (hist.items || [])
+        .sort((a,b)=>(b.lastAccessTs||0)-(a.lastAccessTs||0))
+        .slice(0,20);
+      render(items2);
       toast('Deleted ✅');
     });
 
-    document.getElementById('historyList').appendChild(node);
+    list.appendChild(node);
   });
-}
-
-function toast(msg) {
-  const el = document.getElementById('saveMessage');
-  if (!el) return;
-  el.textContent = msg;
-  el.classList.add('visible');
-  setTimeout(() => el.classList.remove('visible'), 1500);
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -82,9 +85,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   const hist = await loadHistory();
-  // Keep only the last 20 (already guaranteed when we write, but just in case)
   const items = (hist.items || [])
-    .sort((a, b) => (b.lastAccessTs || 0) - (a.lastAccessTs || 0))
+    .sort((a,b)=>(b.lastAccessTs||0)-(a.lastAccessTs||0))
     .slice(0, 20);
   render(items);
 });

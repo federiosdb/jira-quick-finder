@@ -1,10 +1,42 @@
-async function getMappings() {
+// =========================================
+// ============== HISTORY BADGE ============
+// =========================================
+const KEY_HISTORY = 'searchHistory';
+
+function suffixEmoji(count) {
+  if (count === 100) return ' 💯';
+  if (count > 100)  return ' 🚀';
+  if (count > 50)   return ' 👍';
+  if (count > 0)    return ' ✅';
+  return '';
+}
+
+function loadHistory() {
   return new Promise((resolve) => {
-    chrome.storage.sync.get({ mappings: [] }, ({ mappings }) => resolve(mappings || []));
+    chrome.storage.sync.get({ [KEY_HISTORY]: { count: 0, items: [] } }, (res) =>
+      resolve(res[KEY_HISTORY] || { count: 0, items: [] })
+    );
   });
 }
 
-// Parser: accept JAG-123 (, ; \n \t)
+async function updateHistoryBadge() {
+  const wrapper = document.getElementById('searchHistory');
+  const a = wrapper?.querySelector('.history-link');
+  if (!wrapper || !a) return;
+
+  const hist = await loadHistory();
+  const count = hist.count || 0;
+  a.textContent = `${count} Issue/s searched${suffixEmoji(count)}`;
+  // Importante: ruta sin "/" inicial
+  a.href = chrome.runtime.getURL('src/pages/history.html');
+  a.target = '_blank';
+  a.rel = 'noreferrer noopener';
+}
+
+// =========================================
+// =============== PARSER KEYS =============
+// =========================================
+// AcceptJAG-123, splited by coma/space/new line
 function parseKeys(raw) {
   const matches = (raw || "")
     .toUpperCase()
@@ -12,77 +44,81 @@ function parseKeys(raw) {
   return matches ? matches.slice(0, 50) : [];
 }
 
-function extractPrefix(key) {
-  const idx = key.indexOf('-');
-  return idx > 0 ? key.slice(0, idx) : null;
+// Send keys to background to open them
+function openIssuesFromPopup(keys) {
+  if (!keys?.length) return;
+  chrome.runtime.sendMessage({ type: 'OPEN_KEYS_FROM_POPUP', payload: keys });
 }
 
-async function openIssues(keys) {
-  if (!keys || !keys.length) return;
-
-  const mappings = await getMappings();
-  const map = new Map();
-  for (const m of mappings) {
-    if (!m?.prefix || !m?.baseUrl) continue;
-    map.set(m.prefix.toUpperCase(), m.baseUrl.endsWith('/') ? m.baseUrl : m.baseUrl + '/');
-  }
-
-  const notFound = [];
-  for (const rawKey of keys) {
-    const key = rawKey.toUpperCase();
-    const prefix = extractPrefix(key);
-    const base = prefix ? map.get(prefix.toUpperCase()) : null;
-    if (base) {
-      chrome.tabs.create({ url: base + key });
-    } else {
-      notFound.push(key);
-    }
-  }
-
-  if (notFound.length) {
-    alert(
-      "Missing configuration for:\n" +
-      notFound.join(", ") +
-      "\n\nAdd the prefix in Options."
-    );
-  }
-}
-
-chrome.runtime.onMessage.addListener((msg) => {
-  if (msg?.type === "OPEN_KEYS") {
-    const keys = parseKeys(msg.payload);
-    if (keys.length) openIssues(keys);
-  }
-});
-
+// =========================================
+// =============== BOOTSTRAP ===============
+// =========================================
 document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('issueInput');
 
-    // Version in footer
+  // Contador + link a History
+  updateHistoryBadge();
+  // Refresh the badge when history changes
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'sync' && changes.searchHistory) updateHistoryBadge();
+  });
+
+  // Version of badge (if the tag HTML exists)
   const versionEl = document.getElementById('versionBadge');
   try {
     const { version } = chrome.runtime.getManifest() || {};
     if (versionEl && version) versionEl.textContent = `Beta v${version}`;
-  } catch (_) {
+  } catch {
     if (versionEl) versionEl.textContent = '';
   }
 
-  document.getElementById('btnOpen').addEventListener('click', async () => {
-    await openIssues(parseKeys(input.value));
-  });
+  // Open issue (click)
+  const btnOpen = document.getElementById('btnOpen');
+  if (btnOpen) {
+    btnOpen.addEventListener('click', async () => {
+      openIssuesFromPopup(parseKeys(input.value));
+    });
+  }
 
-  input.addEventListener('keydown', async (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      await openIssues(parseKeys(input.value));
-    }
-  });
+  // Open issue (Enter)
+  if (input) {
+    input.addEventListener('keydown', async (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        openIssuesFromPopup(parseKeys(input.value));
+      }
+    });
+  }
 
-  // open news page
-  document.getElementById('btnBell').addEventListener('click', () => {
-    chrome.tabs.create({ url: chrome.runtime.getURL('/src/pages/news.html') });
-  });
+  // Bell / news (if exist button)
+  const btnBell = document.getElementById('btnBell');
+  if (btnBell) {
+    btnBell.addEventListener('click', () => {
+      chrome.tabs.create({ url: chrome.runtime.getURL('src/pages/news.html') });
+    });
+  }
 
-  document.getElementById('btnOptions').addEventListener('click', () => chrome.runtime.openOptionsPage());
-  document.getElementById('btnClose').addEventListener('click', () => window.close());
+  // Options
+  const btnOptions = document.getElementById('btnOptions');
+  if (btnOptions) {
+    btnOptions.addEventListener('click', () => chrome.runtime.openOptionsPage());
+  }
+
+  // Close
+  const btnClose = document.getElementById('btnClose');
+  if (btnClose) {
+    btnClose.addEventListener('click', () => window.close());
+  }
+});
+
+// =========================================
+// (Compatibility) if an older version
+// open by OPEN_KEYS in popup, is rediurected
+// to the centralized BG.
+// =========================================
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg?.type === 'OPEN_KEYS') {
+    const keys = parseKeys(msg.payload);
+    if (keys.length) openIssuesFromPopup(keys);
+  }
 });

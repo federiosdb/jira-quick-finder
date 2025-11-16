@@ -12,12 +12,16 @@ It helps teams working with several Jira servers (clients, environments, or proj
 
 ---
 
-## 🚀 Features (v1.0.7)
+## 🚀 Features (v1.0.8)
 
 ### 🔍 Fast Issue Lookup
 - Enter any Jira issue key (e.g., `JAG-6660`) to open it instantly.
 - Supports **multiple keys separated by commas** → opens all in new tabs.  
   Example: `JAG-6660,JAG-6661`
+- Search history: This feature helps to find all the previous log of your search.
+  - Access it via the new "History" tab.
+  - View your last 20 unique Jira issues searched.
+  - Delete individual entries or clear the entire history.
 
 ### ⚙️ Configurable Jira Instances
 - In the **Options page**, define multiple **prefix → base URL** pairs.  

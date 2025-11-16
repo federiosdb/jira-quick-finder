@@ -392,3 +392,84 @@ a.history-link{
   color: var(--muted);
   text-decoration: none;
 }
+
+/* =======================
+   History (clean grid)
+   ======================= */
+
+/* Cabecera fija una sola vez */
+.hist-header {
+  display: grid;
+  grid-template-columns: minmax(120px, auto) 1fr 160px;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--muted);
+  padding: 4px 0 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 6px;
+}
+.hist-header .right { text-align: right; }
+
+.hist-list { margin-top: 2px; }
+
+/* Fila (key | title | date | delete) */
+.hist-row {
+  display: grid;
+  grid-template-columns: minmax(120px, auto) 1fr 160px 40px;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.hist-row:last-child { border-bottom: none; }
+
+/* Key como enlace discreto */
+.hist-key {
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.hist-key:hover { text-decoration: underline; }
+
+/* Título ocupa todo, sin cortes ni bordes */
+.hist-title {
+  font-size: 14px;
+  color: var(--fg);
+  line-height: 1.35;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Fecha visible con hora, a la derecha */
+.hist-date {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Papelera */
+.hist-row .btn-delete {
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 8px 10px;
+  height: 36px;
+  width: 40px;
+  justify-self: end;
+  opacity: 0.8;
+  transition: opacity .15s ease, background .15s ease, border-color .15s ease;
+}
+.hist-row:hover .btn-delete { opacity: 1; }
+.hist-row .btn-delete:hover { background: #ffeaea; border-color: #ffb3b3; }
+
+/* Responsive: la fecha baja en pantallas estrechas */
+@media (max-width: 720px) {
+  .hist-header { grid-template-columns: 1fr 1fr; }
+  .hist-header span:nth-child(3) { grid-column: 2; text-align: right; }
+  .hist-row { grid-template-columns: minmax(120px, auto) 1fr 40px; }
+  .hist-date { grid-column: 1 / span 2; text-align: left; margin-top: 6px; }
+}
