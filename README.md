@@ -22,6 +22,7 @@ It helps teams working with several Jira servers (clients, environments, or proj
   - Access it via the new "History" tab.
   - View your last 20 unique Jira issues searched.
   - Delete individual entries or clear the entire history.
+  - Download the search history as CSV
 
 ### ⚙️ Configurable Jira Instances
 - In the **Options page**, define multiple **prefix → base URL** pairs.  
@@ -135,7 +136,6 @@ JAG-6660, ABC-1001
 ---
 
 ## 🏁 Future Improvements (Planned)
-- Context menu integration (“Open selection in Jira”).
 - Omnibox support (`jir JAG-1234` from address bar).
 - Issue preview (summary/status via Jira API).
 - Import/export configuration profiles.
@@ -145,10 +145,10 @@ JAG-6660, ABC-1001
 
 ## ✨ Version  updated status (v1.0.9)
 - **History log – NEW**:
-- Full new ferature
-- Log of the last 20 search
-- Delte by row or full clear
-- Download the search history as CSV
+  - Full new ferature
+  - Log of the last 20 search
+  - Delte by row or full clear
+  - Download the search history as CSV
 
 ---
 
