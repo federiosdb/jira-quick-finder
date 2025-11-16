@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>History – Jira Quick Finder</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="hero-overlay">
+        <h1 class="hero-title">Search History</h1>
+        <p class="hero-subtitle">Your last 20 unique Jira issues searched.</p>
+      </div>
+    </header>
+
+    <main class="container container--options card">
+      <div class="popup-header" style="margin-bottom: 16px;">
+        <div class="brand">
+          <img src="../icons/icon32.png" alt="Jira Quick Finder" />
+          <h6 class="title">History</h6>
+        </div>
+        <button class="close" id="btnCloseTab" title="Close Tab">✕</button>
+      </div>
+
+      <div id="historyList"></div>
+
+      <div class="toolbar">
+        <button id="btnClearAll" class="btn secondary"><span class="icon">🧹</span> Clear all</button>
+      </div>
+
+      <div id="saveMessage" class="save-message"></div>
+    </main>
+
+    <footer class="footer">
+      <span>Jira Quick Finder</span>
+      <span class="dot">•</span>
+      <span id="versionFooter"></span>
+    </footer>
+  </div>
+
+  <template id="tplRow">
+    <div class="row-config">
+      <!-- Key (link) -->
+      <div class="field">
+        <label class="label">Issue</label>
+        <a class="input" target="_blank" rel="noreferrer noopener"></a>
+      </div>
+      <!-- Title -->
+      <div class="field field-uri">
+        <label class="label">Title</label>
+        <input type="text" class="input title" readonly />
+      </div>
+      <!-- Date -->
+      <div class="field">
+        <label class="label">Last accessed</label>
+        <input type="text" class="input date" readonly />
+      </div>
+      <!-- Delete -->
+      <button class="btn-delete" title="Delete">🗑️</button>
+    </div>
+  </template>
+
+  <script src="../js/history/index.js"></script>
+</body>
+</html>
