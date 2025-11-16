@@ -23,6 +23,65 @@ function toast(msg) {
   setTimeout(() => el.classList.remove('visible'), 1500);
 }
 
+// --- CSV helpers ---
+function csvEscape(s = "") {
+  const t = String(s).replace(/"/g, '""');
+  return `"${t}"`; // siempre entrecomillado para seguridad
+}
+
+// Limpia la key al inicio del título: "[MAG-6660] Foo" -> "Foo"
+function cleanTitle(item) {
+  let title = item.title || "";
+  if (item.key && title.startsWith(`[${item.key}]`)) {
+    title = title.replace(`[${item.key}]`, "").trim();
+  }
+  return title;
+}
+
+async function exportHistoryCsv() {
+  const { searchHistory } = await new Promise((resolve) => {
+    chrome.storage.sync.get({ searchHistory: { count: 0, items: [] } }, resolve);
+  });
+  const items = (searchHistory.items || [])
+    .sort((a,b) => (b.lastAccessTs || 0) - (a.lastAccessTs || 0))
+    .slice(0, 20);
+
+  const header = [
+    "Issue Key",
+    "Title",
+    "URL",
+    "Last Accessed (ISO)",
+    "Last Accessed (Local)"
+  ];
+
+  const rows = items.map(it => {
+    const title = cleanTitle(it);
+    const iso = it.lastAccessTs ? new Date(it.lastAccessTs).toISOString() : "";
+    const local = it.lastAccessTs ? new Date(it.lastAccessTs).toLocaleString() : "";
+    return [
+      csvEscape(it.key || ""),
+      csvEscape(title),
+      csvEscape(it.url || ""),
+      csvEscape(iso),
+      csvEscape(local)
+    ].join(",");
+  });
+
+  // BOM para que Excel abra UTF-8 correctamente
+  const csv = "\uFEFF" + header.join(",") + "\n" + rows.join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  const date = new Date().toISOString().slice(0,10);
+  a.download = `jira-quick-finder-history_${date}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
 function render(items) {
   const list = document.getElementById('historyList');
   const tpl = document.getElementById('tplRow');
@@ -77,6 +136,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const vf = document.getElementById('versionFooter');
   if (vf) vf.textContent = `v${v}`;
 
+  document.getElementById('btnExport').addEventListener('click', exportHistoryCsv);
   document.getElementById('btnCloseTab').addEventListener('click', () => window.close());
   document.getElementById('btnClearAll').addEventListener('click', async () => {
     await saveHistory({ count: 0, items: [] });

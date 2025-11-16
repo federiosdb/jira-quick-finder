@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Jira Quick Finder",
   "description": "Search issues from multiple Jira instances by key (e.g., JAG-6660) with one click or by pressing Enter. Configure prefix → base URL. More Info: Fede Ríos",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "action": {
     "default_title": "Jira Quick Finder",
     "default_icon": {

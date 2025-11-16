@@ -12,7 +12,7 @@ It helps teams working with several Jira servers (clients, environments, or proj
 
 ---
 
-## 🚀 Features (v1.0.8)
+## 🚀 Features (v1.0.9)
 
 ### 🔍 Fast Issue Lookup
 - Enter any Jira issue key (e.g., `JAG-6660`) to open it instantly.
@@ -143,10 +143,12 @@ JAG-6660, ABC-1001
 
 ---
 
-## ✨ Version  updated status (v1.0.7)
-- **Context menu – NEW** (v1.0.7):
-- Full new styles
-- Full new structured files management
+## ✨ Version  updated status (v1.0.9)
+- **History log – NEW**:
+- Full new ferature
+- Log of the last 20 search
+- Delte by row or full clear
+- Download the search history as CSV
 
 ---
 
