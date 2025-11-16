@@ -150,8 +150,6 @@ const pendingTitleMap = new Map(); // tabId -> { key, url }
 async function openIssuesFromBg(keys) {
   if (!keys?.length) return;
 
-  incLifetime(1);
-
   const mappings = await getMappings();
   const map = new Map();
   for (const m of mappings) {
