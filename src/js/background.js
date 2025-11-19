@@ -41,7 +41,7 @@ async function readClipboardFromActiveTab() {
 // ================================
 chrome.commands.onCommand.addListener(async (cmd) => {
   if (cmd === "open_popup") {
-    try { await chrome.action.openPopup(); } catch {}
+    try { await chrome.action.openPopup(); } catch { }
     return;
   }
 
@@ -50,7 +50,7 @@ chrome.commands.onCommand.addListener(async (cmd) => {
     const keys = parseKeys(text || "");
     if (!keys.length) {
       // Fallback: abrir popup para pegar manualmente
-      try { await chrome.action.openPopup(); } catch {}
+      try { await chrome.action.openPopup(); } catch { }
       return;
     }
     await openIssuesFromBg(keys);
@@ -78,7 +78,7 @@ chrome.contextMenus.onClicked.addListener(async (info) => {
       type: "basic",
       iconUrl: chrome.runtime.getURL("src/icons/icon48.png"),
       title: "No Jira keys found",
-      message: "Select text like MAG-1234 (you can select many, separated by commas).",
+      message: "Select text like JAG-1234 (you can select many, separated by commas).",
       priority: 0
     });
     return;
@@ -222,15 +222,15 @@ chrome.runtime.onMessage.addListener((msg) => {
 // =========================================
 // Keyword defined in manifest: "jira"
 // Examples of input:
-//  - jira MAG-1234
-//  - jira MAG-1234,MAG-1235
+//  - jira JAG-1234
+//  - jira JAG-1234,JAG-1235
 //  - jira foo bar   (without keys -> sugerences / open Options)
 
 chrome.omnibox.setDefaultSuggestion({
-  description: 'Type Jira keys (e.g., MAG-1234 or multiple: MAG-1,MAG-2).'
+  description: 'Type Jira keys (e.g., JAG-1234 or multiple: JAG-1,JAG-2).'
 });
 
-// Formatea descripción segura para omnibox (sin HTML)
+// Fomating omnibox (without HTML)
 function omniDesc(txt) {
   return txt.replace(/[<>]/g, '');
 }
@@ -262,7 +262,7 @@ chrome.omnibox.onInputChanged.addListener(async (text, suggest) => {
       });
     }
 
-    // COmpacted recomendation to open all
+    // Compacted recomendation to open all
     const joined = unique.join(',');
     suggestions.unshift({
       content: joined,
@@ -278,7 +278,7 @@ chrome.omnibox.onInputChanged.addListener(async (text, suggest) => {
     // Empty input: hint to open popup
     suggestions.push({
       content: '__OPEN_POPUP__',
-      description: omniDesc('Hint: type a Jira key like MAG-1234 or multiple separated by comma.')
+      description: omniDesc('Hint: type a Jira key like JAG-1234 or multiple separated by comma.')
     });
   }
 
@@ -294,7 +294,7 @@ chrome.omnibox.onInputEntered.addListener(async (text, disposition) => {
     return;
   }
   if (raw === '__OPEN_POPUP__') {
-    try { await chrome.action.openPopup(); } catch {}
+    try { await chrome.action.openPopup(); } catch { }
     return;
   }
 
@@ -316,6 +316,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     chrome.storage.local.get({ [LIFETIME_KEY]: 0 }, (res) => {
       sendResponse({ lifetime: Number(res[LIFETIME_KEY] || 0) });
     });
-    return true; // <-- necesario para respuesta asíncrona
+    return true; // <-- ASYNC RESPONSE
   }
 });

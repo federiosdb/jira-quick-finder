@@ -12,7 +12,7 @@ It helps teams working with several Jira servers (clients, environments, or proj
 
 ---
 
-## 🚀 Features (v1.0.10)
+## 🚀 Features (v1.0.11)
 
 ### 🔍 Fast Issue Lookup
 - Enter any Jira issue key (e.g., `JAG-6660`) to open it instantly.
@@ -24,6 +24,7 @@ It helps teams working with several Jira servers (clients, environments, or proj
   - Delete individual entries or clear the entire history.
   - Download the search history as CSV
 - Omnibox support (`jira JAG-1234` from address bar).
+- Ping and notes feature for Jira issues on History page.
 
 ### ⚙️ Configurable Jira Instances
 - In the **Options page**, define multiple **prefix → base URL** pairs.  
@@ -143,9 +144,10 @@ JAG-6660, ABC-1001
 
 ---
 
-## ✨ Version  updated status (v1.0.10)
-- **Omnibox – NEW**:
-  - Omnibox support: Open in search bar (`jira JAG-1234` from address bar).
+## ✨ Version  updated status (v1.0.11)
+- **Ping and Notes – NEW**:
+  - Added new ping feature for Jira issues on History page.
+  - Added new notes feature for Jira issues on History page.
 
 ---
 

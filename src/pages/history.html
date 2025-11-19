@@ -49,11 +49,24 @@
 
     <!-- Template de filas -->
     <template id="tplRow">
-      <div class="hist-row">
-        <a class="hist-key" target="_blank" rel="noreferrer noopener"></a>
-        <span class="hist-title"></span>
-        <span class="hist-date"></span>
-        <button class="btn-delete" title="Delete">🗑️</button>
+      <div class="hist-row-wrapper">
+        <div class="hist-row">
+          <button class="btn-pin" title="Pin this item" aria-label="Pin">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 5c0 .55-.45 1-1 1h-1v8l2 2v1H8v-1l2-2V6H9c-.55 0-1-.45-1-1s.45-1 1-1h6c.55 0 1 .45 1 1z" />
+            </svg>
+          </button>
+          <a class="hist-key" target="_blank" rel="noreferrer noopener"></a>
+          <span class="hist-title"></span>
+          <span class="hist-date"></span>
+          <div class="actions">
+            <button class="btn-note" title="Add note">📝</button>
+            <button class="btn-delete" title="Delete">🗑️</button>
+          </div>
+        </div>
+        <div class="note-container hidden">
+          <textarea class="note-input" placeholder="Add a note..."></textarea>
+        </div>
       </div>
     </template>
 
