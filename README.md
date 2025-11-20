@@ -113,7 +113,8 @@ jira-quick-finder/
     ├── content_script.js
     ├── news.js
     ├── options.js
-    └── popup.js
+    ├── popup.js
+    └── theme.js
 ├── pages
     ├── history.html
     ├── news.html
