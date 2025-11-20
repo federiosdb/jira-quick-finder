@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <title>Configuration – Jira Quick Finder</title>
   <link rel="stylesheet" href="/src/css/styles.css" />
+  <script src="/src/js/theme.js"></script>
 </head>
 
 <body>
@@ -20,6 +21,16 @@
     <!-- Center content -->
     <main class="container container--options card">
       <h2 class="section-title">General Settings</h2>
+      <div class="setting-row">
+        <div class="setting-info">
+          <h3>Dark Mode</h3>
+          <p>Enable a dark theme for a better viewing experience in low-light environments.</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleDarkMode">
+          <span class="slider round"></span>
+        </label>
+      </div>
       <div class="setting-row">
         <div class="setting-info">
           <h3>Smart Links</h3>
@@ -42,6 +53,14 @@
         <button id="btnSave" class="btn">
           <span class="icon">💾</span> Save
         </button>
+        <div style="flex: 1;"></div>
+        <button id="btnExport" class="btn secondary" title="Export Configuration">
+          <span class="icon">📤</span> Export
+        </button>
+        <button id="btnImport" class="btn secondary" title="Import Configuration">
+          <span class="icon">📥</span> Import
+        </button>
+        <input type="file" id="fileInput" accept=".json" style="display: none;" />
         <button id="btnCloseTab" class="btn secondary">
           <span class="icon">✖</span> Close Tab
         </button>

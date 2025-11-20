@@ -1,10 +1,73 @@
 :root {
+  /* Light Theme (Default) */
   --bg: #ffffff;
   --fg: #0b1320;
   --muted: #5b677a;
   --primary: #0052cc;
+  --primary-hover: #0043a8;
   --border: #e6e9ef;
   --radius: 12px;
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --btn-secondary-bg: #f6f8fb;
+  --btn-secondary-fg: #0b1320;
+  --btn-delete-bg: #f8f8f8;
+  --btn-delete-border: #ddd;
+  --btn-delete-hover-bg: #ffeaea;
+  --btn-delete-hover-border: #ffb3b3;
+  --hero-bg: #0b1320;
+  --hero-fg: #ffffff;
+  --row-hover: #f6f8fb;
+  --shadow-color: rgba(10, 20, 40, 0.08);
+  --success-bg: #e6f9ed;
+  --success-border: #b4edc0;
+  --success-fg: #0f5132;
+  --page-bg: #f5f7fb;
+  --news-item-bg: #fbfcff;
+  --news-item-border: #e4e8f0;
+  --project-input-bg: aliceblue;
+  --setting-row-bg: #fbfcff;
+  --btn-bg: #0b1320;
+  --btn-fg: #ffffff;
+  --btn-secondary-bg: #f6f8fb;
+  --btn-secondary-fg: #0b1320;
+  --btn-secondary-border: #e6e9ef;
+}
+
+[data-theme="dark"] {
+  /* Dark Theme */
+  --bg: #0d1117;
+  /* GitHub Dark Dimmed style */
+  --fg: #c9d1d9;
+  --muted: #8b949e;
+  --primary: #58a6ff;
+  --primary-hover: #79c0ff;
+  --border: #30363d;
+  --radius: 12px;
+  --card-bg: #161b22;
+  --input-bg: #0d1117;
+  --btn-bg: #1f6feb;
+  /* Primary Blue for Dark Mode Buttons */
+  --btn-fg: #ffffff;
+  --btn-secondary-bg: #21262d;
+  --btn-secondary-fg: #c9d1d9;
+  --btn-secondary-border: #30363d;
+  --btn-delete-bg: #21262d;
+  --btn-delete-border: #30363d;
+  --btn-delete-hover-bg: #3e1f1f;
+  --btn-delete-hover-border: #6e2828;
+  --hero-bg: #161b22;
+  --hero-fg: #f0f6fc;
+  --row-hover: #21262d;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --success-bg: #0f361e;
+  --success-border: #1b5c32;
+  --success-fg: #7ee787;
+  --page-bg: #010409;
+  --news-item-bg: #161b22;
+  --news-item-border: #30363d;
+  --project-input-bg: #1f2937;
+  --setting-row-bg: #161b22;
 }
 
 * {
@@ -17,7 +80,7 @@ body {
   padding: 0;
   font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
   color: var(--fg);
-  background: var(--bg);
+  background: var(--page-bg);
 }
 
 /* Popup (by default 320px) */
@@ -54,6 +117,8 @@ input[type="url"] {
   width: 100%;
   font-size: 14px;
   line-height: 1.3;
+  background: var(--input-bg);
+  color: var(--fg);
 }
 
 input#issueInput {
@@ -63,7 +128,7 @@ input#issueInput {
 input.input.project {
   font-weight: bold;
   border: 0px;
-  background-color: aliceblue;
+  background-color: var(--project-input-bg);
 }
 
 .btn {
@@ -71,8 +136,8 @@ input.input.project {
   align-items: center;
   justify-content: center;
   border: 1px solid var(--border);
-  background: var(--fg);
-  color: #fff;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
   padding: 10px 12px;
   border-radius: 10px;
   cursor: pointer;
@@ -80,8 +145,9 @@ input.input.project {
 }
 
 .btn.secondary {
-  background: #f6f8fb;
-  color: var(--fg);
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-fg);
+  border: 1px solid var(--btn-secondary-border);
 }
 
 /* Close button */
@@ -140,8 +206,8 @@ input.input.project {
 
 /* Delete Button */
 .btn-delete {
-  background: #f8f8f8;
-  border: 1px solid #ddd;
+  background: var(--btn-delete-bg);
+  border: 1px solid var(--btn-delete-border);
   border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
@@ -151,8 +217,8 @@ input.input.project {
 }
 
 .btn-delete:hover {
-  background: #ffeaea;
-  border-color: #ffb3b3;
+  background: var(--btn-delete-hover-bg);
+  border-color: var(--btn-delete-hover-border);
 }
 
 .btn:hover {
@@ -178,9 +244,9 @@ input.input.project {
   margin-top: 10px;
   padding: 10px 12px;
   border-radius: 8px;
-  background-color: #e6f9ed;
-  border: 1px solid #b4edc0;
-  color: #0f5132;
+  background-color: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: var(--success-fg);
   font-size: 14px;
   font-weight: 500;
   opacity: 0;
@@ -227,7 +293,7 @@ input.input.project {
   height: 30px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: #ffffff;
+  background: var(--card-bg);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -242,8 +308,8 @@ input.input.project {
 }
 
 .btn-gear:hover {
-  background: #f6f8fb;
-  border-color: #d9e2ef;
+  background: var(--btn-secondary-bg);
+  border-color: var(--btn-secondary-border);
   transform: rotate(20deg);
   transition: all 0.2s ease;
 }
@@ -270,7 +336,7 @@ input.input.project {
   height: 30px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: #fff;
+  background: var(--card-bg);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -281,8 +347,8 @@ input.input.project {
 }
 
 .btn-bell:hover {
-  background: #f6f8fb;
-  border-color: #d9e2ef;
+  background: var(--btn-secondary-bg);
+  border-color: var(--btn-secondary-border);
 }
 
 .bell-icon {
@@ -366,15 +432,15 @@ input.input.project {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f5f7fb;
+  background: var(--page-bg);
 }
 
 /* ===== Hero (with image) ===== */
 .hero {
   position: relative;
   height: 180px;
-  background-color: #0b1320;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--hero-bg);
+  border-bottom: 1px solid var(--border);
   display: grid;
   place-items: center;
 }
@@ -389,7 +455,7 @@ input.input.project {
 }
 
 .hero-title {
-  color: #fff;
+  color: var(--hero-fg);
   font-size: 32px;
   letter-spacing: .2px;
   margin: 2px 0 0;
@@ -398,16 +464,16 @@ input.input.project {
 .hero-subtitle {
   position: relative;
   top: -30px;
-  color: var(--bg);
+  color: var(--muted);
   font-size: 16px;
 }
 
 /* ===== Card Center ===== */
 .card {
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 16px;
-  box-shadow: 0 10px 22px rgba(10, 20, 40, 0.08);
+  box-shadow: 0 10px 22px var(--shadow-color);
   margin: -60px auto 40px;
   padding: 28px;
   width: min(960px, 92vw);
@@ -448,11 +514,11 @@ input.input.project {
 }
 
 .news-item {
-  border: 1px dashed #e4e8f0;
+  border: 1px dashed var(--news-item-border);
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 12px;
-  background: #fbfcff;
+  background: var(--news-item-bg);
 }
 
 .news-item h3 {
@@ -538,7 +604,7 @@ a.history-link:hover {
 }
 
 .hist-row:hover {
-  background-color: #f6f8fb;
+  background-color: var(--row-hover);
 }
 
 /* Pin Button */
@@ -629,8 +695,8 @@ a.history-link:hover {
 
 /* Papelera */
 .btn-delete {
-  background: #f8f8f8;
-  border: 1px solid #ddd;
+  background: var(--btn-delete-bg);
+  border: 1px solid var(--btn-delete-border);
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
@@ -649,8 +715,8 @@ a.history-link:hover {
 }
 
 .btn-delete:hover {
-  background: #ffeaea;
-  border-color: #ffb3b3;
+  background: var(--btn-delete-hover-bg);
+  border-color: var(--btn-delete-hover-border);
 }
 
 /* Note Input Container */
@@ -674,7 +740,7 @@ a.history-link:hover {
   font-family: inherit;
   font-size: 13px;
   resize: vertical;
-  background-color: var(--bg);
+  background-color: var(--input-bg);
   color: var(--fg);
 }
 
@@ -747,7 +813,7 @@ p#lifetimeInfo {
 
 .alarm-container {
   padding: 12px 12px 12px 44px;
-  background-color: #fcfcfc;
+  background-color: var(--row-hover);
   border-top: 1px dashed var(--border);
   margin-top: -1px;
 }
@@ -801,7 +867,7 @@ p#lifetimeInfo {
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  background-color: #fbfcff;
+  background-color: var(--setting-row-bg);
   border: 1px solid var(--border);
   border-radius: 12px;
   margin-bottom: 24px;

@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Jira Quick Finder</title>
   <link rel="stylesheet" href="/src/css/styles.css" />
+  <script src="/src/js/theme.js"></script>
 </head>
+
 <body>
   <div class="container">
     <div class="popup-header">
@@ -12,17 +15,19 @@
         <img src="/src/icons/icon32.png" alt="Jira Quick Finder" />
         <h6 class="title">Jira Quick Finder</h6>
       </div>
-        <!-- Bell icon -->
+      <!-- Bell icon -->
       <button id="btnBell" class="btn-bell" title="More features incomming soon!" aria-label="Notifications">
         <svg class="bell-icon active" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 2a2 2 0 0 0-2 2v1.07A6.002 6.002 0 0 0 6 11v3l-1.38 2.07A1 1 0 0 0 5.53 18h12.94a1 1 0 0 0 .91-1.47L18 14v-3a6.002 6.002 0 0 0-4-5.93V4a2 2 0 0 0-2-2Zm0 20a3 3 0 0 0 3-3H9a3 3 0 0 0 3 3Z"/>
+          <path
+            d="M12 2a2 2 0 0 0-2 2v1.07A6.002 6.002 0 0 0 6 11v3l-1.38 2.07A1 1 0 0 0 5.53 18h12.94a1 1 0 0 0 .91-1.47L18 14v-3a6.002 6.002 0 0 0-4-5.93V4a2 2 0 0 0-2-2Zm0 20a3 3 0 0 0 3-3H9a3 3 0 0 0 3 3Z" />
         </svg>
         <span class="bell-badge" id="bellBadge"></span>
       </button>
       <!-- config Icon -->
       <button id="btnOptions" class="btn-gear" title="Configuration" aria-label="Open configuration">
         <svg class="gear-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M19.14 12.94a7.5 7.5 0 0 0 .06-.94 7.5 7.5 0 0 0-.06-.94l1.67-1.3a.75.75 0 0 0 .18-.96l-1.58-2.74a.75.75 0 0 0-.9-.34l-2 .8a6.9 6.9 0 0 0-1.58-.91l-.3-2.13A.75.75 0 0 0 12.9 2h-3.8a.75.75 0 0 0-.74.63l-.3 2.13c-.56.23-1.09.52-1.58.9l-2-.8a.75.75 0 0 0-.9.34L1.9 8.82a.75.75 0 0 0 .18.96l1.67 1.3a7.5 7.5 0 0 0 0 1.88l-1.67 1.3a.75.75 0 0 0-.18.96l1.58 2.74a.75.75 0 0 0 .9.34l2-.8c.49.38 1.02.67 1.58.9l.3 2.13c.06.36.37.63.74.63h3.8c.37 0 .69-.27.74-.63l.3-2.13c.56-.23 1.09-.52 1.58-.9l2 .8c.33.13.71 0 .9-.34l1.58-2.74a.75.75 0 0 0-.18-.96l-1.67-1.3ZM11 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6Z"/>
+          <path
+            d="M19.14 12.94a7.5 7.5 0 0 0 .06-.94 7.5 7.5 0 0 0-.06-.94l1.67-1.3a.75.75 0 0 0 .18-.96l-1.58-2.74a.75.75 0 0 0-.9-.34l-2 .8a6.9 6.9 0 0 0-1.58-.91l-.3-2.13A.75.75 0 0 0 12.9 2h-3.8a.75.75 0 0 0-.74.63l-.3 2.13c-.56.23-1.09.52-1.58.9l-2-.8a.75.75 0 0 0-.9.34L1.9 8.82a.75.75 0 0 0 .18.96l1.67 1.3a7.5 7.5 0 0 0 0 1.88l-1.67 1.3a.75.75 0 0 0-.18.96l1.58 2.74a.75.75 0 0 0 .9.34l2-.8c.49.38 1.02.67 1.58.9l.3 2.13c.06.36.37.63.74.63h3.8c.37 0 .69-.27.74-.63l.3-2.13c.56-.23 1.09-.52 1.58-.9l2 .8c.33.13.71 0 .9-.34l1.58-2.74a.75.75 0 0 0-.18-.96l-1.67-1.3ZM11 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6Z" />
         </svg>
       </button>
       <button class="close" id="btnClose" title="Cerrar">✕</button>
@@ -36,17 +41,20 @@
         <span class="icon-search" aria-hidden="true">
           <!-- flat search icon (SVG) -->
           <svg viewBox="0 0 24 24" width="16" height="16" focusable="false" aria-hidden="true">
-            <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-1.06 1.06l.27.28v.79l4.25 4.25a1 1 0 0 0 1.41-1.41L15.5 14Zm-6 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9Z" />
+            <path
+              d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-1.06 1.06l.27.28v.79l4.25 4.25a1 1 0 0 0 1.41-1.41L15.5 14Zm-6 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9Z" />
           </svg>
         </span>
         Search
       </button>
       <div class="row-footer-popup">
         <div class="version-badge" id="versionBadge" aria-hidden="true"></div>
-        <div class="search-history" id="searchHistory" aria-label="My history"><a class="history-link" href="" title="Click here to see your history log" target="_blank"> X issue/s searched</a></div>
+        <div class="search-history" id="searchHistory" aria-label="My history"><a class="history-link" href=""
+            title="Click here to see your history log" target="_blank"> X issue/s searched</a></div>
       </div>
     </div>
   </div>
   <script src="/src/js/popup.js"></script>
 </body>
+
 </html>

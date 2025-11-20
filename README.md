@@ -12,7 +12,7 @@ It helps teams working with several Jira servers (clients, environments, or proj
 
 ---
 
-## 🚀 Features (v1.0.12)
+## 🚀 Features (v1.0.13)
 
 ### 🔍 Fast Issue Lookup
 - Enter any Jira issue key (e.g., `JAG-6660`) to open it instantly.
@@ -27,6 +27,8 @@ It helps teams working with several Jira servers (clients, environments, or proj
 - Ping and notes feature for Jira issues on History page.
 - Alarms feature for Jira issues on History page.
 - Smart key mapping (e.g., `JAG-1234` opens the Jira configured for `JAG`).
+- Theme support (Dark/Light).
+- Export/Import configuration profiles.
 
 ### ⚙️ Configurable Jira Instances
 - In the **Options page**, define multiple **prefix → base URL** pairs.  
@@ -148,10 +150,10 @@ JAG-6660, ABC-1001
 
 ---
 
-## ✨ Version  updated status (v1.0.12)
-- **Alarms – NEW**:
-  - Added new alarms feature for Jira issues on History page.
-  - **Smart key mapping** (e.g., `JAG-1234` opens the Jira configured for `JAG`).
+## ✨ Version  updated status (v1.0.13)
+- **Useful features**:
+  - Theme support (Dark/Light).
+  - Export/Import configuration profiles.
 
 ---
 
