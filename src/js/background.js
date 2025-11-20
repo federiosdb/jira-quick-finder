@@ -1,14 +1,7 @@
-// ================================
-// ====== Lifetime counter ========
-// ================================
-const LIFETIME_KEY = "searchLifetimeCount";
-
-function incLifetime(n = 1) {
-  chrome.storage.local.get({ [LIFETIME_KEY]: 0 }, (res) => {
-    const next = Number(res[LIFETIME_KEY] || 0) + (Number(n) || 1);
-    chrome.storage.local.set({ [LIFETIME_KEY]: next });
-  });
-}
+import { parseKeys, extractPrefix } from './core/jira-parser.js';
+import { ConfigManager } from './core/config-manager.js';
+import { HistoryManager } from './core/history-manager.js';
+import { ALARM_PREFIX, NOTIFICATION_PREFIX } from './core/constants.js';
 
 // ================================
 // ========== CLIPBOARD ===========
@@ -86,60 +79,6 @@ chrome.contextMenus.onClicked.addListener(async (info) => {
   await openIssuesFromBg(keys);
 });
 
-// =========================================
-// ======= SHARED / MAPPINGS / HISTORY =====
-// =========================================
-
-// Utils
-function parseKeys(raw) {
-  const m = (raw || "").toUpperCase().match(/[A-Z][A-Z0-9]+-\d+/g);
-  return m ? m.slice(0, 50) : [];
-}
-function extractPrefix(key) {
-  const i = key.indexOf("-");
-  return i > 0 ? key.slice(0, i) : null;
-}
-function getMappings() {
-  return new Promise((resolve) => {
-    chrome.storage.sync.get({ mappings: [] }, ({ mappings }) => resolve(mappings || []));
-  });
-}
-
-// History
-const KEY_HISTORY = 'searchHistory';
-
-function loadHistoryBg() {
-  return new Promise((resolve) => {
-    chrome.storage.sync.get({ [KEY_HISTORY]: { count: 0, items: [] } }, (res) =>
-      resolve(res[KEY_HISTORY] || { count: 0, items: [] })
-    );
-  });
-}
-async function saveHistoryBg(data) {
-  await chrome.storage.sync.set({ [KEY_HISTORY]: data });
-}
-async function recordSearchBg({ key, url, title }) {
-  const now = Date.now();
-  const hist = await loadHistoryBg();
-  hist.count = (hist.count || 0) + 1;
-
-  const items = Array.isArray(hist.items) ? hist.items : [];
-  const idx = items.findIndex(x => x.key === key);
-  if (idx >= 0) {
-    items[idx].lastAccessTs = now;
-    if (!items[idx].title && title) items[idx].title = title;
-    if (url) items[idx].url = url;
-  } else {
-    items.unshift({ key, url, title: title || '', lastAccessTs: now });
-  }
-
-  hist.items = items
-    .sort((a, b) => (b.lastAccessTs || 0) - (a.lastAccessTs || 0))
-    .slice(0, 20);
-
-  await saveHistoryBg(hist);
-}
-
 // ================================
 // ======= OPEN & TITLE CAP =======
 // ================================
@@ -150,27 +89,21 @@ const pendingTitleMap = new Map(); // tabId -> { key, url }
 async function openIssuesFromBg(keys) {
   if (!keys?.length) return;
 
-  const mappings = await getMappings();
-  const map = new Map();
-  for (const m of mappings) {
-    if (!m?.prefix || !m?.baseUrl) continue;
-    map.set(m.prefix.toUpperCase(), m.baseUrl.endsWith('/') ? m.baseUrl : m.baseUrl + '/');
-  }
-
   const notFound = [];
 
   for (const raw of keys) {
     const key = (raw || '').toUpperCase();
-    const prefix = extractPrefix(key);
-    const base = prefix ? map.get(prefix.toUpperCase()) : null;
+    const base = await ConfigManager.getBaseUrlForKey(key);
+
     if (!base) {
       notFound.push(key);
       continue;
     }
-    incLifetime(1);
+
+    await HistoryManager.incLifetime(1);
     const url = base + key;
     const tab = await chrome.tabs.create({ url });
-    await recordSearchBg({ key, url, title: '' });
+    await HistoryManager.recordSearch({ key, url, title: '' });
     pendingTitleMap.set(tab.id, { key, url });
   }
 
@@ -195,13 +128,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   const title = tab?.title || '';
   if (!title) return;
 
-  const hist = await loadHistoryBg();
-  const items = Array.isArray(hist.items) ? hist.items : [];
-  const idx = items.findIndex(x => x.key === pending.key);
-  if (idx >= 0 && !items[idx].title) {
-    items[idx].title = title;
-    await saveHistoryBg({ ...hist, items });
-  }
+  await HistoryManager.updateTitle(pending.key, title);
 });
 
 chrome.tabs.onRemoved.addListener((tabId) => {
@@ -221,10 +148,6 @@ chrome.runtime.onMessage.addListener((msg) => {
 // =============== OMNIBOX =================
 // =========================================
 // Keyword defined in manifest: "jira"
-// Examples of input:
-//  - jira JAG-1234
-//  - jira JAG-1234,JAG-1235
-//  - jira foo bar   (without keys -> sugerences / open Options)
 
 chrome.omnibox.setDefaultSuggestion({
   description: 'Type Jira keys (e.g., JAG-1234 or multiple: JAG-1,JAG-2).'
@@ -238,12 +161,6 @@ function omniDesc(txt) {
 chrome.omnibox.onInputChanged.addListener(async (text, suggest) => {
   const raw = (text || '').trim();
   const keys = parseKeys(raw);
-  const mappings = await getMappings();
-  const map = new Map();
-  for (const m of mappings) {
-    if (!m?.prefix || !m?.baseUrl) continue;
-    map.set(m.prefix.toUpperCase(), m.baseUrl.endsWith('/') ? m.baseUrl : m.baseUrl + '/');
-  }
 
   const suggestions = [];
 
@@ -251,8 +168,7 @@ chrome.omnibox.onInputChanged.addListener(async (text, suggest) => {
     // Recomend open by URL (if mapping)
     const unique = Array.from(new Set(keys)).slice(0, 5);
     for (const key of unique) {
-      const prefix = extractPrefix(key);
-      const base = prefix ? map.get(prefix.toUpperCase()) : null;
+      const base = await ConfigManager.getBaseUrlForKey(key);
       const url = base ? (base + key) : null;
       suggestions.push({
         content: key, // Push Enter on the recomendation, send the content (key)
@@ -313,15 +229,15 @@ chrome.omnibox.onInputEntered.addListener(async (text, disposition) => {
 // ===== Expose by message =====
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg?.type === "GET_LIFETIME_COUNT") {
-    chrome.storage.local.get({ [LIFETIME_KEY]: 0 }, (res) => {
-      sendResponse({ lifetime: Number(res[LIFETIME_KEY] || 0) });
+    HistoryManager.getLifetimeCount().then(lifetime => {
+      sendResponse({ lifetime });
     });
     return true; // <-- ASYNC RESPONSE
   }
 
   if (msg?.type === "SET_ALARM") {
     const { key, timestamp, repeats, title, note } = msg.payload;
-    const alarmName = `alarm-${key}`;
+    const alarmName = `${ALARM_PREFIX}${key}`;
 
     // Store alarm metadata
     chrome.storage.local.set({
@@ -335,7 +251,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   if (msg?.type === "CLEAR_ALARM") {
     const { key } = msg.payload;
-    const alarmName = `alarm-${key}`;
+    const alarmName = `${ALARM_PREFIX}${key}`;
     chrome.alarms.clear(alarmName);
     chrome.storage.local.remove(alarmName);
     sendResponse({ success: true });
@@ -347,7 +263,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 // =========== ALARMS =============
 // ================================
 chrome.alarms.onAlarm.addListener((alarm) => {
-  if (!alarm.name.startsWith('alarm-')) return;
+  if (!alarm.name.startsWith(ALARM_PREFIX)) return;
 
   console.log('Alarm triggered:', alarm.name);
 
@@ -359,14 +275,13 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     }
 
     // Show notification
-    const notifId = `jira-alarm-${data.key}-${Date.now()}`;
+    const notifId = `${NOTIFICATION_PREFIX}${data.key}-${Date.now()}`;
     chrome.notifications.create(notifId, {
       type: "basic",
       iconUrl: chrome.runtime.getURL("icons/icon48.png"), // Use root icon
       title: `⏰ Jira Reminder: ${data.key}`,
       message: `${data.title || 'No title'}\n${data.note ? 'Note: ' + data.note : ''}`,
       priority: 2
-      // requireInteraction: true // Removed to avoid potential issues on some OS
     }, (createdId) => {
       if (chrome.runtime.lastError) {
         console.error('Notification error:', chrome.runtime.lastError);
@@ -392,14 +307,12 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 });
 
 chrome.notifications.onClicked.addListener(async (notifId) => {
-  if (!notifId.startsWith('jira-alarm-')) return;
+  if (!notifId.startsWith(NOTIFICATION_PREFIX)) return;
 
   // Extract key from ID: jira-alarm-KEY-TIMESTAMP
   const parts = notifId.split('-');
   if (parts.length >= 3) {
     const key = `${parts[2]}-${parts[3]}`; // Reconstruct key (e.g. JAG-1234)
-    // Or simpler: we can store the URL in the alarm data if we want to be precise, 
-    // but openIssuesFromBg handles logic well.
     await openIssuesFromBg([key]);
   }
   chrome.notifications.clear(notifId);

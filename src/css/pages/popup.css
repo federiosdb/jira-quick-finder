@@ -1,0 +1,30 @@
+input#issueInput {
+    margin: 10px 0;
+}
+
+.row-footer-popup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+a.history-link {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+}
+
+a.history-link:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+/* Version text */
+.version-badge {
+    margin-top: 6px;
+    text-align: right;
+    font-size: 12px;
+    color: #a8b0bd;
+    user-select: none;
+}

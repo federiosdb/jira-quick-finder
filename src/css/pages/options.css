@@ -1,0 +1,59 @@
+/* Grid: Project | Key | Base URI | delete */
+.row-config {
+    display: grid;
+    grid-template-columns:
+        minmax(220px, 1fr)
+        /* Project */
+        minmax(140px, 0.7fr)
+        /* Key */
+        minmax(420px, 2fr)
+        /* Base URL */
+        auto;
+    /* Delete button */
+    gap: 12px;
+    align-items: end;
+    margin-bottom: 12px;
+}
+
+/* Bottom Bar */
+.toolbar {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    justify-content: flex-start;
+}
+
+/* Settings Row */
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: var(--setting-row-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 24px;
+}
+
+.setting-info h3 {
+    margin: 0 0 4px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.setting-info p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* Responsive: Mobile view */
+@media (max-width: 900px) {
+    .container--options {
+        width: 100%;
+    }
+
+    .row-config {
+        grid-template-columns: 1fr;
+    }
+}

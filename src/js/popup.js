@@ -1,8 +1,9 @@
+import { parseKeys } from './core/jira-parser.js';
+import { STORAGE_KEYS } from './core/constants.js';
+
 // =========================================
 // ============== HISTORY BADGE ============
 // =========================================
-const KEY_HISTORY = 'searchHistory';
-const LIFETIME_KEY = 'searchLifetimeCount';
 
 async function getLifetimeCount() {
   return new Promise((resolve) => {
@@ -14,18 +15,10 @@ async function getLifetimeCount() {
 
 function suffixEmoji(count) {
   if (count === 100) return ' 💯';
-  if (count > 100)  return ' 🚀';
-  if (count > 50)   return ' 👍';
-  if (count > 0)    return ' ✅';
+  if (count > 100) return ' 🚀';
+  if (count > 50) return ' 👍';
+  if (count > 0) return ' ✅';
   return '';
-}
-
-function loadHistory() {
-  return new Promise((resolve) => {
-    chrome.storage.sync.get({ [KEY_HISTORY]: { count: 0, items: [] } }, (res) =>
-      resolve(res[KEY_HISTORY] || { count: 0, items: [] })
-    );
-  });
 }
 
 async function updateHistoryBadge() {
@@ -43,13 +36,6 @@ async function updateHistoryBadge() {
 // =========================================
 // =============== PARSER KEYS =============
 // =========================================
-// AcceptJAG-123, splited by coma/space/new line
-function parseKeys(raw) {
-  const matches = (raw || "")
-    .toUpperCase()
-    .match(/[A-Z][A-Z0-9]+-\d+/g);
-  return matches ? matches.slice(0, 50) : [];
-}
 
 // Send keys to background to open them
 function openIssuesFromPopup(keys) {
@@ -67,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateHistoryBadge();
   // Refresh the badge when history changes
   chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === 'sync' && changes.searchHistory) updateHistoryBadge();
+    if (area === 'sync' && changes[STORAGE_KEYS.HISTORY]) updateHistoryBadge();
   });
 
   // Version of badge (if the tag HTML exists)

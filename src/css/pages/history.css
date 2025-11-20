@@ -1,0 +1,309 @@
+/* =======================
+   History (Flex layout)
+   ======================= */
+
+/* Cabecera fija una sola vez */
+.hist-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--muted);
+    padding: 4px 12px 8px 44px;
+    /* Indent to match content (pin width) */
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 6px;
+}
+
+.hist-header span:nth-child(1) {
+    width: 120px;
+}
+
+/* Issue column */
+.hist-header span:nth-child(2) {
+    flex: 1;
+}
+
+/* Title column */
+.hist-header .right {
+    margin-left: auto;
+}
+
+.hist-list {
+    margin-top: 2px;
+}
+
+.hist-row-wrapper {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--border);
+}
+
+.hist-row-wrapper:last-child {
+    border-bottom: none;
+}
+
+.hist-row {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 12px;
+}
+
+.hist-row:hover {
+    background-color: var(--row-hover);
+}
+
+/* Pin Button */
+.btn-pin {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    margin-right: 4px;
+}
+
+.btn-pin:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--fg);
+}
+
+.btn-pin.active {
+    color: var(--primary);
+    transform: rotate(45deg);
+}
+
+.btn-pin.active svg {
+    fill: currentColor;
+}
+
+/* Key link */
+.hist-key {
+    font-weight: 700;
+    color: var(--primary);
+    text-decoration: none;
+    white-space: nowrap;
+    width: 120px;
+    /* Fixed width for alignment */
+    flex-shrink: 0;
+}
+
+.hist-key:hover {
+    text-decoration: underline;
+}
+
+/* Título ocupa todo */
+.hist-title {
+    font-size: 14px;
+    color: var(--fg);
+    line-height: 1.35;
+    white-space: normal;
+    word-break: break-word;
+    flex: 1;
+}
+
+/* Date visible with hour */
+.hist-date {
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    margin-left: 12px;
+}
+
+/* Actions container */
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 12px;
+}
+
+/* Note Button */
+.btn-note {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    padding: 4px;
+}
+
+.btn-note:hover,
+.btn-note.active {
+    opacity: 1;
+}
+
+/* Papelera */
+.btn-delete {
+    background: var(--btn-delete-bg);
+    border: 1px solid var(--btn-delete-border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 6px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: all .15s ease;
+}
+
+.hist-row:hover .btn-delete {
+    opacity: 1;
+}
+
+.btn-delete:hover {
+    background: var(--btn-delete-hover-bg);
+    border-color: var(--btn-delete-hover-border);
+}
+
+/* Note Input Container */
+.note-container {
+    padding: 0 12px 12px 44px;
+    /* Indent to align with text */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.note-container.hidden {
+    display: none;
+}
+
+.note-input {
+    width: 100%;
+    min-height: 60px;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    resize: vertical;
+    background-color: var(--input-bg);
+    color: var(--fg);
+}
+
+.note-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(0, 82, 204, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+    .hist-header {
+        display: none;
+    }
+
+    /* Hide header on small screens */
+    .hist-row {
+        flex-wrap: wrap;
+    }
+
+    .hist-key {
+        width: auto;
+        margin-right: 8px;
+    }
+
+    .hist-title {
+        width: 100%;
+        order: 3;
+        margin-top: 4px;
+    }
+
+    .hist-date {
+        margin-left: auto;
+        order: 2;
+    }
+
+    .actions {
+        margin-left: auto;
+        order: 4;
+        margin-top: 8px;
+    }
+}
+
+p#lifetimeInfo {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+}
+
+/* Alarm Styles */
+.btn-alarm {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    padding: 4px;
+}
+
+.btn-alarm:hover,
+.btn-alarm.active {
+    opacity: 1;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.2));
+}
+
+.btn-alarm.active {
+    transform: scale(1.1);
+}
+
+.alarm-container {
+    padding: 12px 12px 12px 44px;
+    background-color: var(--row-hover);
+    border-top: 1px dashed var(--border);
+    margin-top: -1px;
+}
+
+.alarm-container.hidden {
+    display: none;
+}
+
+.alarm-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.alarm-row label {
+    width: 60px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.alarm-date,
+.alarm-repeats {
+    padding: 6px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.alarm-repeats {
+    width: 60px;
+}
+
+.alarm-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    padding-left: 72px;
+    /* Align with inputs */
+}
+
+.alarm-actions .btn {
+    padding: 6px 12px;
+    font-size: 12px;
+}

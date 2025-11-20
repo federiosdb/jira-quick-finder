@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Jira Quick Finder",
   "description": "Search issues very quick from multiple Jira instances by key (e.g., JAG-6660) with one click or by pressing Enter.",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "action": {
     "default_title": "Jira Quick Finder",
     "default_icon": {
@@ -15,7 +15,8 @@
   },
   "permissions": ["storage", "tabs", "scripting", "alarms", "notifications", "contextMenus"],
   "background": {
-    "service_worker": "/src/js/background.js"
+    "service_worker": "/src/js/background.js",
+    "type": "module"
   },
   "omnibox": { 
     "keyword": "jira"

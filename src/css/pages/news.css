@@ -1,0 +1,24 @@
+/* ===== News items ===== */
+.news-container {
+    padding: 24px;
+}
+
+.news-item {
+    border: 1px dashed var(--news-item-border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    background: var(--news-item-bg);
+}
+
+.news-item h3 {
+    margin: 0 0 6px;
+}
+
+.news-item ul {
+    margin: 0 0 0 16px;
+}
+
+.news-item li {
+    margin: 4px 0;
+}

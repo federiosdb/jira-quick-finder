@@ -1,0 +1,29 @@
+/* Popup (by default 320px) */
+.container {
+    padding: 14px;
+    width: 320px;
+}
+
+/* Options (min width URIs) */
+.container--options {
+    width: 960px;
+    max-width: 100%;
+    padding: 20px;
+}
+
+/* ===== Card Center ===== */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 10px 22px var(--shadow-color);
+    margin: -60px auto 40px;
+    padding: 28px;
+    width: min(960px, 92vw);
+    position: relative;
+    z-index: 2;
+}
+
+.container--options.card {
+    padding: 24px 22px;
+}

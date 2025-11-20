@@ -1,0 +1,187 @@
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn:hover {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08),
+        0 0 6px rgba(0, 82, 204, 0.25);
+    transition: all 0.2s ease;
+}
+
+.btn:active {
+    transform: translateY(0.5px) scale(1);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+.btn.secondary {
+    background: var(--btn-secondary-bg);
+    color: var(--btn-secondary-fg);
+    border: 1px solid var(--btn-secondary-border);
+}
+
+/* Close button */
+.close {
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--muted);
+    line-height: 1;
+}
+
+.close:hover {
+    font-weight: 700;
+    color: var(--fg);
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.08),
+        0 0 6px rgba(0, 82, 204, 0.25);
+    transition: all 0.2s ease;
+}
+
+/* Delete Button */
+.btn-delete {
+    background: var(--btn-delete-bg);
+    border: 1px solid var(--btn-delete-border);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 12px;
+    height: 42px;
+    align-self: end;
+}
+
+.btn-delete:hover {
+    background: var(--btn-delete-hover-bg);
+    border-color: var(--btn-delete-hover-border);
+}
+
+/* Buttons Icons */
+.btn .icon {
+    margin-right: 6px;
+    font-weight: 700;
+}
+
+/* Search Button Icon */
+.btn .icon-search {
+    display: inline-flex;
+    margin-right: 8px;
+}
+
+.btn .icon-search svg {
+    display: block;
+    fill: currentColor;
+}
+
+/* Config Button */
+.btn-gear {
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.btn-gear:focus-visible {
+    outline: 2px solid #cfe1ff;
+    outline-offset: 2px;
+}
+
+.btn-gear:hover {
+    background: var(--btn-secondary-bg);
+    border-color: var(--btn-secondary-border);
+    transform: rotate(20deg);
+    transition: all 0.2s ease;
+}
+
+.btn-gear .gear-icon {
+    width: 18px;
+    height: 18px;
+    display: block;
+    color: var(--muted);
+    fill: currentColor;
+    shape-rendering: geometricPrecision;
+}
+
+.btn-gear:hover .gear-icon {
+    color: var(--primary);
+}
+
+/* Bell button (header) */
+.btn-bell {
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+    transition: all .2s ease;
+}
+
+.btn-bell:hover {
+    background: var(--btn-secondary-bg);
+    border-color: var(--btn-secondary-border);
+}
+
+.bell-icon {
+    width: 18px;
+    height: 18px;
+    display: block;
+    fill: currentColor;
+    color: var(--muted);
+    shape-rendering: geometricPrecision;
+    transition: color .2s ease;
+}
+
+.btn-bell:hover .bell-icon {
+    color: var(--primary);
+}
+
+.bell-icon.active {
+    opacity: 1;
+    animation: bellDing 4s ease-in-out infinite;
+}
+
+/* Movement 10s */
+@keyframes bellDing {
+
+    0%,
+    96% {
+        transform: rotate(0deg);
+    }
+
+    97% {
+        transform: rotate(12deg);
+    }
+
+    98% {
+        transform: rotate(-10deg);
+    }
+
+    99% {
+        transform: rotate(6deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}

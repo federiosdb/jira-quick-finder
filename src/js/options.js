@@ -1,3 +1,7 @@
+import { normalizePrefix, normalizeBase } from './core/jira-parser.js';
+import { getSync, setSync } from './core/storage.js';
+import { STORAGE_KEYS } from './core/constants.js';
+
 const list = document.getElementById('list');
 const tpl = document.getElementById('tplRow');
 
@@ -14,44 +18,39 @@ function createRow(project = '', prefix = '', baseUrl = '') {
   list.appendChild(node);
 }
 
-function normalizePrefix(p) {
-  return (p || '').trim().toUpperCase();
-}
-function normalizeBase(url) {
-  url = (url || '').trim();
-  if (!url) return '';
-  return url.endsWith('/') ? url : (url + '/');
-}
-
 async function load() {
-  chrome.storage.sync.get({ mappings: [], smartLinksEnabled: false, themePreference: 'light' }, (res) => {
-    // Load Smart Links toggle
-    const toggle = document.getElementById('toggleSmartLinks');
-    if (toggle) toggle.checked = res.smartLinksEnabled;
-
-    // Load Dark Mode toggle
-    const toggleDark = document.getElementById('toggleDarkMode');
-    if (toggleDark) {
-      toggleDark.checked = res.themePreference === 'dark';
-      // Listen for changes immediately for preview
-      toggleDark.addEventListener('change', (e) => {
-        if (window.themeUtils) {
-          window.themeUtils.toggleTheme(e.target.checked);
-        }
-      });
-    }
-
-    list.innerHTML = '';
-    const mappings = res.mappings;
-    if (Array.isArray(mappings) && mappings.length) {
-      // Compatibility: if no exists 'project', keep empty
-      for (const m of mappings) {
-        createRow(m.project || '', m.prefix || '', m.baseUrl || '');
-      }
-    } else {
-      createRow();
-    }
+  const res = await getSync({
+    [STORAGE_KEYS.MAPPINGS]: [],
+    [STORAGE_KEYS.SMART_LINKS]: false,
+    [STORAGE_KEYS.THEME]: 'light'
   });
+
+  // Load Smart Links toggle
+  const toggle = document.getElementById('toggleSmartLinks');
+  if (toggle) toggle.checked = res[STORAGE_KEYS.SMART_LINKS];
+
+  // Load Dark Mode toggle
+  const toggleDark = document.getElementById('toggleDarkMode');
+  if (toggleDark) {
+    toggleDark.checked = res[STORAGE_KEYS.THEME] === 'dark';
+    // Listen for changes immediately for preview
+    toggleDark.addEventListener('change', (e) => {
+      if (window.themeUtils) {
+        window.themeUtils.toggleTheme(e.target.checked);
+      }
+    });
+  }
+
+  list.innerHTML = '';
+  const mappings = res[STORAGE_KEYS.MAPPINGS];
+  if (Array.isArray(mappings) && mappings.length) {
+    // Compatibility: if no exists 'project', keep empty
+    for (const m of mappings) {
+      createRow(m.project || '', m.prefix || '', m.baseUrl || '');
+    }
+  } else {
+    createRow();
+  }
 }
 
 async function save() {
@@ -85,7 +84,10 @@ async function save() {
   // Theme is saved immediately on toggle, but we can ensure it here too if needed, 
   // though toggleTheme handles it.
 
-  await chrome.storage.sync.set({ mappings, smartLinksEnabled });
+  await setSync({
+    [STORAGE_KEYS.MAPPINGS]: mappings,
+    [STORAGE_KEYS.SMART_LINKS]: smartLinksEnabled
+  });
 
   // Show saved message
   const msg = document.getElementById('saveMessage');
@@ -96,11 +98,11 @@ async function save() {
 
 // Export Configuration
 function exportConfig() {
-  chrome.storage.sync.get(null, (items) => {
+  getSync(null).then((items) => {
     const config = {
-      mappings: items.mappings || [],
-      smartLinksEnabled: items.smartLinksEnabled || false,
-      themePreference: items.themePreference || 'light',
+      mappings: items[STORAGE_KEYS.MAPPINGS] || [],
+      smartLinksEnabled: items[STORAGE_KEYS.SMART_LINKS] || false,
+      themePreference: items[STORAGE_KEYS.THEME] || 'light',
       exportedAt: new Date().toISOString(),
       version: chrome.runtime.getManifest().version
     };
@@ -137,11 +139,11 @@ function importConfig(event) {
         return;
       }
 
-      chrome.storage.sync.set({
-        mappings: config.mappings,
-        smartLinksEnabled: config.smartLinksEnabled ?? false,
-        themePreference: config.themePreference ?? 'light'
-      }, () => {
+      setSync({
+        [STORAGE_KEYS.MAPPINGS]: config.mappings,
+        [STORAGE_KEYS.SMART_LINKS]: config.smartLinksEnabled ?? false,
+        [STORAGE_KEYS.THEME]: config.themePreference ?? 'light'
+      }).then(() => {
         alert('Configuration imported successfully! Reloading...');
         location.reload();
       });
