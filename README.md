@@ -130,7 +130,7 @@ jira-quick-finder/
 
 | Project | Key | Jira Base URL |
 | --------|-----|----------------|
-| ProjectJAG | JAG | https://portail.agir.client.com/browse/ |
+| ProjectJAG | JAG | https://yoururl.client.com/browse/ |
 | ProjectAbc | ABC | https://mycompanyjira.atlassian.net/browse/ |
 
 When searching for:
